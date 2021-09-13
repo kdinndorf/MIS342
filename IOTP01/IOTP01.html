@@ -1,0 +1,436 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <title>IOT Pi 01</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- PgP 7/11/2019 summative assignment for Raspberry Pi, Arduino Uno, micro:bit -->
+    <!-- Bootstrap -->
+    <link href="../../ReadOnly/bootstrap.css" rel="stylesheet">
+
+    <!-- constant file for student firstname, lastname, starid on students' pages -->
+    <script src="../constants.js"></script>
+
+    <!-- course constant file that contains semester, class, section pages -->
+    <script src="../../ReadOnly/CourseConstants.js"></script>
+
+</head>
+
+<body onload="setVariables()">
+    <form class="container-fluid" action="https://eprofessor.azurewebsites.net/code/ProcessFormData.asp" method="post" name="frmAssignment" id="frmAssignment">
+
+        <input name="InstID" type="hidden" id="InstID" value="00617282">
+
+        <h1 class="text-center">Setting Up a Raspberry Pi</h1>
+
+
+        <!-- -start-Student, class and assignment information. Assignment hard-coded, other values from constants.js file-start -->
+        <div class="row col-lg-12">
+            <div class="col-lg-3">
+                <label class="text-primary" for="FirstName">First Name:</label>
+                <input class="form-control" name="FirstName" id="FirstName" type="text" value="default first name" readonly="readonly">
+            </div>
+            <div class="col-lg-3">
+                <label class="text-primary" for="LastName">Last Name:</label>
+                <input class="form-control" name="LastName" id="LastName" type="text" value="default last name" readonly="readonly">
+            </div>
+            <div class="col-lg-3">
+                <label class="text-primary" for="pin">StarID:</label>
+                <input class="form-control" name="pin" id="pin" type="text" value="default StarID" readonly="readonly">
+            </div>
+            <div class="col-lg-3">
+                <label class="text-primary" for="email">Email:</label>
+                <input class="form-control" name="email" id="email" type="email" value="default email address" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="row col-lg-12">
+            <div class="col-lg-3">
+                <label class="text-primary" for="semester">Semester:</label>
+                <input class="form-control" name="semester" id="semester" type="text" value="default" readonly="readonly">
+            </div>
+            <div class="col-lg-3">
+                <label class="text-primary" for="class">Class:</label>
+                <input class="form-control" name="class" id="class" value="xClass" type="text" readonly="readonly">
+            </div>
+            <div class="col-lg-3">
+                <label class="text-primary" for="section">Section:</label>
+                <input class="form-control" name="section" id="section" value="default" type="text" readonly="readonly">
+            </div>
+            <div class="col-lg-3">
+                <label class="text-primary" for="assignment">Assignment:</label>
+                <input class="form-control" name="assignment" id="assignment" value="IOTP01" type="text" readonly="readonly">
+            </div>
+        </div>
+        <!-- -end-Student, class and assignment information-end -->
+        <br />
+
+        <!-- Calculate the correct path for saving the files -->
+        <script>Path = "&#92;OneDrive - MNSCU&#92;" + xClass + "&#92;" + document.getElementById("assignment").value + "&#92;"; </script>
+
+
+        <div class="col-lg-12">
+            <br />
+            <input class=" text-danger btn-block btn-lg" type="submit" name="Submit" value="SUBMIT -once you have completed this assignment- SUBMIT"><br />
+        </div>
+
+        <div class="h3 text-danger col-lg-12">
+            100 Points<hr />
+        </div>
+
+
+        <div class="col-lg-12"><a href="#Objectives" class="btn btn-info" data-toggle="collapse">Learning Objectives</a></div>
+        <div id="Objectives" class=" collapse in col-lg-12">
+
+            <p>
+                <a href="RaspberryPi3BPlus.png" class="img-responsive img-rounded" target="popup" onclick="window.open('RaspberryPi3BPlus.png', 'popup'); return false;">
+                    <img src="RaspberryPi3BPlus.png" width="300" alt="Raspberry Pi 3 B+" class="img-responsive img-responsive" />
+                </a>
+                <br />Raspberry Pi 3 B+
+            </p>
+
+
+            <p>
+                These instructions will show you how to download and create the operating system for a Raspberry Pi single-board computer (SBC); and then start up the device.<br />
+                SBCs are becoming ubiquitous-examples are <a href="https://store.google.com/us/magazine/compare_thermostats?hl=en-US" class="bg-info text-white" target="_blank">Nest thermostats</a> and <a href="https://shop.ring.com/pages/doorbell-cameras" class="bg-info text-white" target="_blank">Ring doorbells</a>.<br />
+                These devices make up the Internet of Things-IoT, which is greatly impacting organizations and everyday life.<br />
+                In later assignments you will continue working with and experiencing the capabilities of the Raspberry Pi.
+            </p>
+            <p>After completing this assignment you will be able to:</p>
+            <ol>
+                <li>Obtain latest Raspbian operating system</li>
+                <li>Create a bootable USB 3.0 flash drive containing the operating system</li>
+                <li>Boot the Raspberry Pi</li>
+                <li>Connect to the WSU Guest wireless network</li>
+                <li>Configure the Raspberry Pi</li>
+                <li>Use a web browser and other software on the Raspberry Pi</li>
+                <li>Install an application on the Raspberry Pi to take screen shots</li>
+                <li>Upload the screen shot to D2L.</li>
+            </ol>
+            <hr />
+        </div>
+
+
+
+        <div class="col-lg-12"><a href="#Overview" class="btn btn-info" data-toggle="collapse">Assignment Overview</a></div>
+
+        <div id="Overview" class="collapse in  col-lg-12">
+            This assignment reviews basic computer concepts that you will need in this course and throughout your career.
+            <br />
+            Somsen 301 makes use of a Raspberry Pi 3 B+. <br />
+            Please use a 16GB SanDisk USB 3.0 Flash Drive (Cruzer, Ultrafit or Glide) for these assignments.
+            <p>
+                You are expected to have a working knowledge of SBC hardware and software.<br />
+                If you do not understand how to use an item, perform a Google Search, 
+                refer to the <a href="https://learn.winona.edu/WSU_Technology_Knowledge_Base" class="bg-info text-white" target="_blank">WSU Technology Knowledge Base</a>,&nbsp; ask a teaching assistant, or ask the instructor.
+            </p>
+
+            <p>
+                <a href="RPi3Pinout.png" class="img-responsive img-rounded" target="popup" onclick="window.open('RPi3Pinout.png', 'popup'); return false;">
+                    <img src="RPi3Pinout.png" width="300" alt="Raspberry Pi 3" class="img-responsive img-responsive" />
+                </a>
+                Raspberry Pi 3 B+
+            </p>
+
+            <hr />
+        </div>
+
+        <!--Exercise 1-->
+
+        <div class="col-lg-12"><a href="#Exercise01" class="btn btn-info" data-toggle="collapse">Exercise 1-Obtain Operating System</a></div>
+
+        <div id="Exercise01" class="collapse in  col-lg-12">
+            <ol>
+                <li>These steps are performed on your laptop.<br />
+                    Download the required files (Raspbian image, Raspberry Pi Imager) from the WSU network at 
+                    <code>\\mispgp\RaspberryPiAndSoftwareImages\</code> to your <code> Downloads</code> folder<br />
+                    or obtain this software from Professor Paulson&#39;s OneDrive ReadOnly folder, <a href="https://mnscu-my.sharepoint.com/:f:/g/personal/wp8798rh_minnstate_edu/Ellwjc3DXPdBlFO2tO9Wp-gBHfqOYdgSjDwVxdjZnsoVnQ?e=9IixBd">RaspberryPiAndSoftwareImages</a>
+
+                    <hr />
+                    Alternatively you can obtain the software at these websites:<br />
+                    Raspberry Pi Imager: <a href="https://www.raspberrypi.org/software/">https://www.raspberrypi.org/software/</a><br />
+                    Raspbian Operating System: <a href="https://www.raspberrypi.org/downloads/raspbian/" class="bg-info text-white" target="_blank">https://www.raspberrypi.org/downloads/raspbian/</a>.<br />
+                    VNC Viewer:
+                                        <a href="https://www.realvnc.com/en/connect/download/viewer/">https://www.realvnc.com/en/connect/download/viewer/</a>&nbsp;
+                                        <p>
+                        <a href="RaspberryPiImager.png" class="img-responsive img-rounded" target="popup" onclick="window.open('RaspberryPiImager.PNG', 'popup'); return false;">
+                            <img src="RaspberryPiImager.png" width="300" alt="Rasbian with desktop" class="img-responsive img-responsive" /></a> Raspbian Pi Imager
+                    </p>
+
+                    <hr />
+
+                    Save the Raspberry Pi image file to your Downloads folder. Do NOT place it in any OneDrive folder or sub folder.  That will cause problems, as it is a large (1.6GB) file. <p>
+                        <a href="Software.PNG" class="img-responsive img-rounded" target="popup" onclick="window.open('Software.PNG', 'popup'); return false;">
+                            <img src="Software.PNG" width="300" alt="Required software" class="img-responsive img-responsive" /></a> Required Software
+                    </p>
+                <hr />
+                </li>
+
+                <li>Use File Explorer, find the Imager install file, and double-click to install Raspberry Pi Imager.</li>
+
+            </ol>
+            <hr />
+        </div>
+
+
+
+        <!--Exercise 2-->
+
+        <div class="col-lg-12"><a href="#Exercise02" class="btn btn-info" data-toggle="collapse">Exercise 2-Flash USB drive</a></div>
+
+        <div id="Exercise02" class="collapse in  col-lg-12">
+
+            <ol>
+                <li>These steps are performed on your laptop.</li>
+
+                <li>Install the USB 3.0 flash drive into your laptop or a port in the HP Dock.</li>
+
+                <li>Open Imager and make sure it recognizes the flash drive under &quot;Choose Storage&quot;.<br />
+                    If Imager does not appear, you will need to restart your laptop.</li>
+                <li>Select &quot;Choose OS&quot; and scroll to the bottom until you see &quot;Use Custom&quot;. Select &quot;Use Custom&quot; and select your Raspbian Image from your Downloads folder. <br />
+                    <p>
+                        <a href="FlashMicroSD.PNG" class="img-responsive img-rounded" target="popup" onclick="window.open('FlashMicroSD.PNG', 'popup'); return false;">
+                            <img src="FlashMicroSD.PNG" width="300" alt="flash raspbian to microSD" class="img-responsive img-responsive" /></a>Flash Raspbian to USB drive<br />
+                    </p>
+                </li>
+                <li>Press the Write button. The process will take several minutes.</li>
+                <li>After the flash drive operation is complete, open File Explorer on your laptop, navigate to the D: drive, labeled &#39;boot&#39;.<br />
+                    This is the flash drive.<br />
+                    Right-click and choose &#39;New&gt;Text Document&#39;</li>
+                <li>Enter your name as the name of the text document, such as &#39;MyName.txt&#39;<br />
+                    This will identify you as the owner of the flash drive in case it is turned into Lost 
+                    &amp; Found.
+                    <p>
+                        <a href="MyName.JPG" class="img-responsive img-rounded" target="popup" onclick="window.open('MyName.jpg', 'popup'); return false;">
+                            <img src="MyName.JPG" width="300" alt="create MyName.txt" class="img-responsive img-responsive" /></a>Find &#39;boot&#39;, create &#39;MyName.txt&#39;<br />
+                    </p>
+
+                </li>
+            </ol>
+            <hr />
+        </div>
+
+        <!--Exercise 3-->
+
+        <div class="col-lg-12"><a href="#Exercise03" class="btn btn-info" data-toggle="collapse">Exercise 3-Boot Raspberry Pi</a></div>
+
+        <div id="Exercise03" class="collapse in  col-lg-12">
+
+            <ol>
+                <li>While the flash drive is flashing, locate a USB keyboard and mouse.
+                    <br />
+                    Plug them into the Pi at your station. </li>
+
+                <li>Once the flash is complete and verified, remove the flash drive and put it into the Pi.</li>
+
+                <li>Press the power button on the Pi, which should be on top or around the monitor in front of you.<br />
+                    You should see a red light on the Pi, which indicates power is on.</li>
+
+                <li>On your monitor press the button with the colored dot.
+                    <br />
+                    Note that repeatedly pressing this button switches the monitor between displaying your laptop and the Raspberry Pi.
+                </li>
+                <li>Follow the on-screen instructions to set your country, language and Time-zone.<br />
+                    Check the boxes for &#39;Use English language&#39; and &#39;Use US keyboard&#39;.</li>
+                <li>Check “This screen shows a black border around the desktop” if you have a black border.</li>
+                <li>ONLY CONNECT TO WSU GUEST NETWORK!!!<br />
+                    If prompted make an account and log in.<br />
+                    <strong>Note: you may periodically have to open the Raspberry Pi browser to 'winona.edu' and repeat the WSU Guest Network login process.</strong>
+                </li>
+
+                <li>When asked to update, click next.
+                    <br />
+                    The update will begin, this make take a few minutes.
+                    <br />
+                    If asked to restart, do so.</li>
+
+                <li>On your laptop, open Notepad, choose a password (Please use <code>MagicMirror%</code>).<br />
+                    Save your password in a file named  &#39;Readme.txt&#39;; in your  
+                    &#39;  
+                <code><span id="cPath"></span></code>
+                    <script>document.getElementById("cPath").innerHTML = Path; </script>
+                    ' folder.<br />
+
+                </li>
+
+                <li>If you forget your password you can change it in the settings, under Pi&gt;Preferences&gt;Raspberry Pi Configuration.
+                    <p>
+                        <a href="ChangePassword.PNG" class="img-responsive img-rounded" target="popup" onclick="window.open('ChangePassword.PNG', 'popup'); return false;">
+                            <img src="ChangePassword.PNG" width="300" alt="change password" class="img-responsive img-responsive" /></a>Changing Password<br />
+                    </p>
+                </li>
+
+                <li>In the upper right corner of the desktop hover over the Wi-Fi signal to determine the IP address. </li>
+                <li>Store this IP address on your laptop in the ReadMe.txt file that contains your password.<br />
+                    The IP address will be of the format: 10.20.xx.xx<br />
+                    Note that the IP address will change about every 30 days.
+                </li>
+                <li>In the upper left corner, you will see the Raspberry Icon, aka 
+                    &#39;Menu&#39;<br />
+                    Click the Raspberry icon,
+                    <img src="Raspberry.png" width="46" alt="Raspberry" class="img-responsive img-responsive" />
+                    then preferences, and Raspberry Pi Configuration.<br />
+                </li>
+                <li>Click the interfaces tab, Enable SSH and VNC.</li>
+                <li>Reboot the Raspberry Pi so that all changes take effect.</li>
+            </ol>
+            <hr />
+        </div>
+
+
+
+        <!--Exercise 4-->
+
+        <div class="col-lg-12"><a href="#Exercise04" class="btn btn-info" data-toggle="collapse">Exercise 4-Desktop &amp; Screen Shots</a></div>
+
+        <div id="Exercise04" class="collapse in  col-lg-12">
+
+            <p>Mousepad is the text editor.<br />
+                Scrot (short for <strong>SCR</strong>een sh<strong>OT</strong>) takes screen shots that document your work.<br />
+            </p>
+
+            <ol>
+                <li>On the Raspberry Pi open a terminal window.</li>
+
+                <li>In the Terminal window type <code>scrot -h</code><br />This brings up information on how to use scrot.<br />Review this information.<br />
+					<p>
+						<a href="scrot.PNG" class="img-responsive img-rounded" target="popup" onclick="window.open('scrot.PNG', 'popup'); return false;">
+						<img src="scrot.PNG" width="300" alt="scrot help" class="img-responsive img-responsive" /></a>scrot help
+                    </p>
+					<br />
+                </li>
+
+                <li>Note that simply typing <code>scrot</code> in a Terminal window takes a screen shot and stores it in the   Raspberry Pi&#39;s&nbsp; &#39;/home/pi&#39; folder.<br />
+                    <p>
+                        <a href="ScrotShots.PNG" class="img-responsive img-rounded" target="popup" onclick="window.open('scrotShots.PNG', 'popup'); return false;">
+                            <img src="ScrotShots.PNG" width="300" alt="screen shots" class="img-responsive img-responsive" /></a>Scrot Screen Shots
+                    </p>
+                </li>
+
+                <li>Open Mousepad, from the toolbar select Pi&gt;Accessories&gt;Text Editor.</li>
+				<li>From the menu select Edit&gt;Preferences and uncheck the box &#39;Use system monospace font&#39; to allow the displayed font size to change.</li>
+				<li>&nbsp;Create a file that contains only your name in 72 point font, center it on the screen, and add white space as appropriate-see the image below.</li>
+                <li>In the terminal window type in 
+                    <code>scrot -s</code> (scrot select)
+                    then click and drag the mouse to select an area around your name in the text file.<br />
+                    Repeat the process until you have a nicely trimmed image, see below.
+                </li>
+                <li>Open File Manager, navigate to the /home/pi directory and rename the screen shot to <strong>MyName.png</strong></li>
+                <li>Right click the Pi desktop, select &#39;Desktop Preferences&#39;, under the &#39;Desktop&#39; tab set the Layout to &#39;Centre image on screen&#39;, and on Picture select the <strong>MyName.png</strong> file.<br />
+                    Then click OK.<br />
+                    <p>
+                        <a href="YourName.png" class="img-responsive img-rounded" target="popup" onclick="window.open('YourName.PNG', 'popup'); return false;">
+                            <img src="YourName.png" width="300" alt="desktop settings" class="img-responsive img-responsive" /></a>Desktop Settings<br />
+                    </p>
+                </li>
+            </ol>
+            <hr />
+        </div>
+
+
+
+
+
+
+        <div class="col-lg-12"><a href="#UploadScreenShot" class="btn btn-info" data-toggle="collapse">Upload Screenshot</a></div>
+
+        <div id="UploadScreenShot" class="collapse in  col-lg-12">
+            <p>
+                For this final Exercise read all of these instructions.<br />
+                You are submitting to the appropriate D2L Assignment folder a screen shot that documents your work.<br />
+                Make sure that the following programs are running on the Raspberry Pi, with:
+            </p>
+            <ul>
+                <li>Chromium web browser, open to D2L: <a href="https://winona.learn.minnstate.edu/" class="bg-info text-white" target="_blank">https://winona.learn.minnstate.edu/</a>, showing this course, with your name in the top right,</li>
+                <li>Rasberry Pi configuration, &#39;Interfaces&#39; tab, showing VNC and SSH enabled,</li>
+                <li>Your name visible in the desktop background,</li>
+                <li>Terminal window, after running the commands <code>cat /etc/os-release</code> and <code>scrot</code></li>
+            </ul>
+            <br />
+            <p>
+                The screen shot name will be of the format &#39;2019-08-07-125353_1080x1920.scrot.png&#39; and will look something like this:<br />
+                <a href="ConfigurationScreenShot.PNG" class="img-responsive img-rounded" target="popup" onclick="window.open('ConfigurationScreenShot.PNG', 'popup'); return false;">
+                    <img src="ConfigurationScreenShot.PNG" width="300" alt="sample screen shot" class="img-responsive img-responsive" /></a>Sample Screen Shot<br />
+                <br />
+            </p>
+            Use the File Manager and navigate to the &#39;/home/pi&#39; folder to find your screen shot.<br />
+        </div>
+        <div class="col-lg-12 text-primary">
+            <p>
+                (90) 1. On the Raspberry Pi, use the Chromium browser to <a href="https://winona.learn.minnstate.edu/" class="bg-info text-white" target="_blank">login to D2L</a>.<br />
+                Upload your screenshot to the &#39;IOTP01&#39; D2L Assignment Folder.
+            </p>
+            <hr />
+
+            <div class="col-lg-12 text-danger">
+                <h2>Screen Shot IOTP01</h2>
+                <hr />
+            </div>
+        </div>
+
+
+        <div class="col-lg-12"><a href="#ExerciseSubmit" class="btn btn-info" data-toggle="collapse">Submit Assignment</a></div>
+
+
+        <div class="col-lg-12">
+            <p>
+                When all tasks are completed press the Submit button.
+            </p>
+            <hr />
+        </div>
+
+        <div class="col-lg-12 text-primary">
+            (10) 2. Assignment submission<br />
+            <!-- Enter your answer in the VALUE field below   GROK -->
+            <input name="q2" type="text" id="q2" value="I have completed all the exercises, and uploaded my screenshot to the D2L Assignment folder IOTP01.">
+            <hr />
+        </div>
+
+
+        <hr />
+
+        <div class="col-lg-12">
+            <p>Congratulations! You have successfully created and booted a Raspberry Pi single board computer.<br />
+                In the next series of assignments you will explore how to communicate with and control the Raspberry Pi from your laptop.
+            </p>
+            <hr />
+        </div>
+
+
+
+
+        <div class="col-lg-12 text-danger text-center">
+            <h2>-- -- WHEN DONE -- --<br />
+                SHUTDOWN THE RASPBERRY PI<br />
+                TURN OFF THE POWER<br />
+                REMOVE YOUR FLASH DRIVE
+            </h2>
+        </div>
+        <hr />
+
+
+        <div class=" col-lg-12">
+            <br />
+            <input class=" text-danger btn-block btn-lg" type="submit" name="Submit" value="SUBMIT -once you have completed this assignment- SUBMIT">
+            <br />
+        </div>
+
+    </form>
+
+    <!-- Creative Commons License Info -->
+    <div id="xLicense" class=" col-lg-12 text-muted"></div>
+
+    <div id="xfooter" class=" col-lg-12 text-muted"></div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../../ReadOnly/jquery-1.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../../ReadOnly/bootstrap.js"></script>
+
+
+</body>
+</html>
